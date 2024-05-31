@@ -1,0 +1,17 @@
+apply plugin: 'com.android.library'
+
+
+android {
+    compileSdkVersion 28
+    namespace 'com.jilk.ros'
+    defaultConfig {
+        minSdkVersion 22
+        targetSdkVersion 28
+
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.*'])
+}

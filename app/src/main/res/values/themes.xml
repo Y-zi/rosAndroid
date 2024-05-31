@@ -1,0 +1,4 @@
+<resources>
+
+    <style name="Theme.Rossdk" parent="Theme.AppCompat.Light" />
+</resources>

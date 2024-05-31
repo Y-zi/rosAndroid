@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#ACACAC</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccents">#B7EAFB</color>
+    <color name="colorAccentw">#00B5B3B3</color>
+    <color name="userh5">#0026F6</color>
+    <color name="white">#ffffffff</color>
+    <color name="ap_tvcolor_map">#FFFF0000</color>
+    <color name="map_scan">#3fFF0000</color>
+    <color name="yellow">#eeb300</color>
+    <color name="yellow2">#F7C739</color>
+    <color name="blues">#0b84ab</color>
+    <color name="green">#4CAF50</color>
+    <color name="blue_bn">#B7EAFB</color>
+    <color name="purple">#673AB7</color>
+    <color name="black">#FF000000</color>
+
+
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+
+
+    <color name="base_text_color">#333</color>
+    <color name="text_color_two">#666</color>
+    <color name="input_bg_border">#d2d2d2</color>
+    <color name="bubble_selected_color">#6ccc4b</color>
+    <color name="bubble_normal_color">#89e46a</color>
+    <color name="push_audio_delete_txt_color">#666</color>
+    <color name="app_bg_color">#eee</color>
+    <color name="app_bg_color1">#FF9B9A9A</color>
+    <color name="app_bg_color2">#FF36D197</color>
+    <color name="item_bg_color">@android:color/white</color>
+    <color name="item_title_color">#ff8700</color>
+    <color name="item_summary_color">#666</color>
+    <color name="item_time_color">#777</color>
+    <color name="txt_color_orange">#ff8700</color>
+    <color name="txt_color_blue">#32BCFF</color>
+    <color name="map_bag">#ff888888</color>
+
+</resources>
