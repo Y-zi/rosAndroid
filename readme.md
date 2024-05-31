@@ -16,7 +16,7 @@ ros 通讯机制 主要有两种：订阅发布 和 请求回调
 ### 订阅发布:
    - Topic: 为订阅发布的主题名，也是接口名
    - subscribe/publish: 接收指定Topic的消息/发布指定Topic的消息
-   - Topic<Message extends Message>: 为sub 和 pub 收到/发布参数
+   - Topic<msg extends Message>: 为sub 和 pub 收到/发布参数
 ### 请求回调:
    - Service: 为请求的接口名
    - call: 发起请求
