@@ -13,11 +13,11 @@
 如果你的开发平台也是基于Ubuntu下的ros元系统开发，则不需要观看本文教程，请直接移步去看文档即可
 如果你不了解ros 请继续阅读前言,ros 大神请绕过
 ros 通讯机制 主要有两种：订阅发布 和 请求回调
-1.订阅发布:
+### 订阅发布:
    - Topic: 为订阅发布的主题名，也是接口名
    - subscribe/publish: 接收指定Topic的消息/发布指定Topic的消息
    - Topic<Message extends Message>: 为sub 和 pub 收到/发布参数
-2.请求回调:
+### 请求回调:
    - Service: 为请求的接口名
    - call: 发起请求
    - Service<request extends Message ,response extends Message>: 请求数据类型和回调数据类型
