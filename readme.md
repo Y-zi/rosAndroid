@@ -1,7 +1,7 @@
 # ROS跨平台通讯文档
 
 ## 简介
-![效果图](https://raw.githubusercontent.com/Y-zi/rosAndroid/main/com.boat.rosbridge2.jpg)
+![效果图](./com.boat.rosbridge2.jpg)
 此文档为 android/java 语法使用讲解文档，不涉及通讯接口文档，你需要通过解读通讯文档，然后理解消息机制，最后在本代码中实现你想对接的接口功能
 （你可以理解为，本文档教你如何使用http网络请求，通讯文档只提供了 http对应的接口名字和 接口get/put请求方式 以及收发消息的解释文档）
 站在巨人肩膀上眺望远方
