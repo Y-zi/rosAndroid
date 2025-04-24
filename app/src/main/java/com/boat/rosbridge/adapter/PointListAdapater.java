@@ -30,7 +30,7 @@ public class PointListAdapater extends RecyclerView.Adapter<RecyclerView.ViewHol
     @SuppressLint("NotifyDataSetChanged")
     public void setData(List<Points> data){
         mDatas = data;
-        Log.d("TAG", "setData: mDatas "+mDatas.size());
+//        Log.d("TAG", "setData: mDatas "+mDatas.size());
         notifyDataSetChanged();
     }
 
@@ -73,11 +73,22 @@ public class PointListAdapater extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 }
             });
+            rl_bn.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (onItemClickListener!=null){
+                        onItemClickListener.onItemLongClick(v, getAdapterPosition());
+                        return true;
+                    }
+                    return false;
+                }
+            });
         }
 
     }
     public interface OnItemClickListener {
         //参数（父组件，当前单击的View,单击的View的位置，数据）
         public void onItemClick(View view, int position);
+        public void onItemLongClick(View view, int position);
     }
 }

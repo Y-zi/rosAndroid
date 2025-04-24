@@ -41,11 +41,18 @@ import com.boat.rosbridge.adapter.MapListAdapter;
 import com.boat.rosbridge.application.MyApplication;
 import com.boat.rosbridge.message.msg.map_msgs.PointListEntry;
 import com.boat.rosbridge.message.msg.map_msgs.SetTargetGoal;
+import com.boat.rosbridge.message.msg.map_msgs.TargetGoal;
 import com.boat.rosbridge.message.msg.std_msgs.Int16;
 import com.boat.rosbridge.message.msg.std_msgs.Int32;
 import com.boat.rosbridge.R;
 import com.boat.rosbridge.adapter.PointListAdapater;
+import com.boat.rosbridge.message.srv.map_msgs.DeleteTestPointRequest;
+import com.boat.rosbridge.message.srv.map_msgs.DeleteTestPointResponse;
+import com.boat.rosbridge.message.srv.map_msgs.PointSetRequest;
+import com.boat.rosbridge.message.srv.map_msgs.PointSetResponse;
 import com.boat.rosbridge.message.srv.map_msgs.PublishMapRequest;
+import com.boat.rosbridge.message.srv.map_msgs.SaveMapRequest;
+import com.boat.rosbridge.message.srv.map_msgs.SaveMapResponse;
 import com.boat.rosbridge.message.srv.std_srvs.Empty;
 import com.boat.rosbridge.message.srv.std_srvs.TriggerResponse;
 import com.boat.rosbridge.message.srv.map_msgs.ListNaviPointsResponse;
@@ -152,6 +159,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private MapListAdapter mapListAdapter;
     private int mapStatus;
 
+    private long currentFloorId = 0;
     private List<Maps> currentMapList = new ArrayList<Maps>();
     private long currentMapId = 0;
     private List<Points> currentMapPosintList = new ArrayList<Points>();
@@ -212,7 +220,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        loadMap(currentMapList.get((Integer) v.getTag()).getMapId() + "");
+                        loadMap(0, currentFloorId,currentMapList.get((Integer) v.getTag()).getMapId());
                     }
                 });
                 dialog.setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -230,9 +238,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onItemClick(View view, int position) {
                 Log.d(TAG, "onItemClick: position " + position);
+                long pointId = buildMapLocalNaviPoints.get(position).getPointId();
 
-                goNavito(position);
 
+                goNavito(pointId);
+
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+                deleteNavi(currentFloorId, currentMapId, buildMapLocalNaviPoints.get(position).getPointId());
             }
         });
 
@@ -366,6 +382,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                             for (Floors floors : localMapList.getFloors()) {
                                 if (floors.getFloorId() == localMapList.getDefaultFloor()) {
+                                    currentFloorId = floors.getFloorId();
                                     for (Maps maps : floors.getMaps()) {
                                         if (floors.getDefaultmap() == maps.getMapId()) {
                                             if (mapStatus == 0) {
@@ -472,16 +489,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
             }
         });
+//        addPosintServices(0L, "aaa");
     }
 
-    //切换地图
-    private void loadMap(String mapId) {
+    //切换地图(可跨楼层)
+    private void loadMap(final int type, long floorId, long mapId) {
 
         toast("加载中...");
+        client.setDebug(true);
 
         Service<PublishMapRequest, Empty> changeMap = new Service<PublishMapRequest, Empty>
                 (ServiceNames.ChangeMap, PublishMapRequest.class, Empty.class, client);
         PublishMapRequest request = new PublishMapRequest();
+        request.setType(type);
+        request.setFloorId(floorId);
         request.setMapId(mapId);
         changeMap.callWithHandler(request, new MessageHandler<Empty>() {
             @Override
@@ -490,6 +511,75 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.i(TAG, "loadMap() Success");
             }
 
+        });
+    }
+
+    // 保存地图 (只能在建图模式调用)
+    public void saveMapService(int type, long floorId, String floorName,
+                               String mapName) {
+        Service<SaveMapRequest, SaveMapResponse> saveMap = new Service<SaveMapRequest, SaveMapResponse>
+                (ServiceNames.SaveMap, SaveMapRequest.class, SaveMapResponse.class, client);
+        SaveMapRequest request = new SaveMapRequest();
+        request.setType(type);
+        request.setFloorId(floorId);
+        request.setFloorName(floorName);
+        request.setMapName(mapName);
+        saveMap.callWithHandler(request, new MessageHandler<SaveMapResponse>() {
+            @Override
+            public void onMessage(SaveMapResponse message) {
+                if (message.getStatus() != 0) {
+
+                    toast(message.getMessage());
+                }
+            }
+        });
+    }
+
+
+    // 添加导航点
+    public void addPosintServices(long posinMode, String posinName) {
+        Service<PointSetRequest, PointSetResponse> addPoint = new Service<PointSetRequest, PointSetResponse>
+                (ServiceNames.AddPoint, PointSetRequest.class, PointSetResponse.class, client);
+        PointSetRequest request = new PointSetRequest();
+        request.setPointName(posinName);
+        request.setPointMode(posinMode);
+        addPoint.callWithHandler(request, new MessageHandler<PointSetResponse>() {
+            @Override
+            public void onMessage(PointSetResponse message) {
+                Log.d(TAG, "addPosintServices: message.getResult = "+message.getResult());
+            }
+        });
+    }
+
+    // 删除导航点(楼层版)
+    private void deleteNavi(long floor_id, long map_id, long id) {
+
+        Service<DeleteTestPointRequest, DeleteTestPointResponse> deleteNavi = new Service<DeleteTestPointRequest, DeleteTestPointResponse>
+                (ServiceNames.DeleteTestPoint, DeleteTestPointRequest.class, DeleteTestPointResponse.class, client);
+        DeleteTestPointRequest request = new DeleteTestPointRequest();
+        request.setFloorId(floor_id);
+        request.setMapId(map_id);
+        request.setPointId(id);
+        deleteNavi.callWithHandler(request,new MessageHandler<DeleteTestPointResponse>() {
+//            @Override
+//            public void onFailure(RemoteException e) {
+//                safeDismissWaitingDialog();
+//                toast(R.string.toas_main_fail);
+//                e.printStackTrace();
+//            }
+
+            @Override
+            public void onMessage(DeleteTestPointResponse arg0) {
+//                    toast("onSuccess: getResult()" + arg0.getResult());
+
+                if (arg0.getResult() == 0) {
+                    toast("成功");
+                } else if (arg0.getResult() == 4) {
+                    toast("被引用路线，不可删除");
+                } else {
+                    toast("失败");
+                }
+            }
         });
     }
 
@@ -509,6 +599,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //解除注册发布类型
         setTargetGoalPublish.unadvertise();
     }
+
+    //开启导航 楼层版
+    private void goNavito(long pointId) {
+        toast("导航任务: " + pointId);
+
+        Topic<TargetGoal> naviTargetGoalPublish = new Topic<TargetGoal>(TopicNames.naviTargetgoal, TargetGoal.class, client);
+        naviTargetGoalPublish.advertise();
+
+        TargetGoal setTargetGoal = new TargetGoal();
+        setTargetGoal.setFloorId(currentFloorId);
+        setTargetGoal.setMapId(currentMapId);
+        setTargetGoal.setPointId(pointId);
+
+        naviTargetGoalPublish.publish(setTargetGoal);
+
+        naviTargetGoalPublish.unadvertise();
+    }
+
 
     @Override
     protected void onResume() {

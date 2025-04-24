@@ -26,7 +26,7 @@ import com.jilk.ros.rosbridge.indication.*;
 @MessageType(string = "call_service")
 public class CallService extends Operation {
     @Indicator public String service;
-    @Indicated @AsArray public Message args;  
+    @Indicated public Message args;
     public Integer fragment_size; // use Integer for optional items
     public String compression;
 

@@ -54,6 +54,10 @@ public class Service<CallType extends Message, ResponseType extends Message> imp
         //System.out.print("Service.onMessage: ");
         //response.print();
         CallRecord call = calls.get(id);
+        if (call == null){
+            System.out.print("calls not find id = "+id);
+            return;
+        }
         if (call.handler != null) {
             calls.remove(id);
             call.handler.onMessage((ResponseType) response);

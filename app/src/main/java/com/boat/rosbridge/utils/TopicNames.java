@@ -15,6 +15,10 @@ public class TopicNames {
 
     public static String NpathAddorDel = "/npath_addorDel";
 
+    //    只出桩
+    public static String OUTOFCHARGE = "outofcharge"; //1 3
+    public static String WARNLEDSTATUS = "warnLed_status"; //1 3
+
     /**
      * 接收类
      * */
@@ -36,11 +40,25 @@ public class TopicNames {
     //急停状态androidmsg_emergencystatus
     public static String EMEMsg = "androidmsg_emergencystatus";
 
+    //电机锁状态 androidmsg_motorenabledstatus
+    public static String MOROTMsg = "androidmsg_motorenabledstatus";
+
     //充电状态
     public static String ChageMsg = "androidmsg_chargestatus";
 
     //电量状态
     public static String Battry = "power_report";
+
+    //到充电桩前面, 进入上桩模式
+    public static String ChNgeMotionMode = "motion_mode";
+
+    //出桩是否结束
+    public static String OUTOFCHARGE_STATUS = "outofcharge_status"; // 1
+
+    //收到到点结束任务
+    public static String REVICE_OUTMACHINE_SIGNAL = "reviceOutMachineSignal"; // 1
+
+
 
     //定位状态
     public static String LocationMsg = "androidmsg_locationstatus";
@@ -53,6 +71,10 @@ public class TopicNames {
 
     //获取导航点去向的指令回调
     public static String NaviToPointName = "/set_targetgoal";
+
+    //配送 跨楼层导航
+    public static String naviTargetgoal = "/navi_targetgoal";
+
 
     //导航停止消息
     public static String NaviStop= "/navi_stop";

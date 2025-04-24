@@ -8,19 +8,13 @@ package com.boat.rosbridge.message.srv.map_msgs;
 import com.jilk.ros.message.Message;
 import com.jilk.ros.message.MessageType;
 
-@MessageType(string = "map_msgs/PublishMapRequest")
-public class PublishMapRequest extends Message {
-    public int type;// 0 切换楼层和地图 并且更新加载 1 设置指定楼层中的默认地图(只能用于修改其他楼层，当前楼层只能用 0)
+@MessageType(string = "map_msgs/DeleteTestPointRequest")
+public class DeleteTestPointRequest extends Message {
+
     public long floor_id;
     public long map_id;
+    public long point_id;
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
 
     public long getFloorId() {
         return floor_id;
@@ -36,5 +30,13 @@ public class PublishMapRequest extends Message {
 
     public void setMapId(long map_id) {
         this.map_id = map_id;
+    }
+
+    public long getPointId() {
+        return point_id;
+    }
+
+    public void setPointId(long point_id) {
+        this.point_id = point_id;
     }
 }
